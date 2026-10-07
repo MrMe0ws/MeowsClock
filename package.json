@@ -1,0 +1,41 @@
+{
+  "name": "meowsclock",
+  "productName": "MeowsClock",
+  "version": "1.0.1",
+  "description": "Виджет мирового времени для рабочего стола",
+  "author": "Meows",
+  "license": "UNLICENSED",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node scripts/start.js",
+    "icon": "node scripts/make-icon.js",
+    "dist": "node scripts/make-icon.js && electron-builder --win"
+  },
+  "build": {
+    "appId": "com.meowsclock.app",
+    "productName": "MeowsClock",
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "MeowsClock"
+    }
+  },
+  "dependencies": {
+    "flag-icons": "^7.5.0",
+    "koffi": "^3.3.0"
+  },
+  "devDependencies": {
+    "electron": "^44.3.0",
+    "electron-builder": "^26.15.3"
+  }
+}

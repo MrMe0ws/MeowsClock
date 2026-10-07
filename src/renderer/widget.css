@@ -1,0 +1,315 @@
+/* Цвета и размеры повторяют виджет MeowsConvert */
+:root {
+  --surface: #1c1c1e;
+  --surface-2: #2c2c2e;
+  --surface-3: #3a3a3c;
+  --text: #fff;
+  --muted: #8e8e93;
+  --accent: #ff9f0a;
+  --accent-soft: rgba(255, 159, 10, 0.22);
+  --active-bg: #3d3222;
+  --active-text: #f5cf8a;
+  --active-hint: #b39b6e;
+  --night: #8fa8ff;
+  --red: #ff453a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  user-select: none;
+  overflow: hidden;
+}
+
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; outline: none; }
+svg { width: 18px; height: 18px; fill: currentColor; }
+[hidden] { display: none !important; }
+
+.widget {
+  margin: 0;
+  padding: 8px 10px 10px;
+  background: rgba(18, 18, 20, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  position: relative;
+}
+
+/* ---------- Ручки ширины ---------- */
+
+.grip {
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  width: 8px;
+  z-index: 10;
+  cursor: ew-resize;
+  -webkit-app-region: no-drag;
+}
+.grip.left { left: -1px; }
+.grip.right { right: -1px; }
+.grip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 3px;
+  height: 36px;
+  margin-top: -18px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.grip.left::after { left: 1px; }
+.grip.right::after { right: 1px; }
+.grip:hover::after, .grip.active::after { opacity: 0.9; }
+body.resizing, body.resizing * { cursor: ew-resize !important; }
+
+/* ---------- Шапка ---------- */
+
+.w-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  margin-bottom: 6px;
+  -webkit-app-region: drag;
+}
+
+.w-brand { display: flex; align-items: center; gap: 7px; padding-left: 2px; min-width: 0; flex: 1 1 auto; }
+.w-icon { width: 24px; height: 24px; border-radius: 6px; -webkit-user-drag: none; }
+.w-title { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.w-title span:first-child { font-size: 12px; font-weight: 600; }
+.status { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.w-actions { display: flex; gap: 2px; -webkit-app-region: no-drag; }
+.w-actions button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+}
+.w-actions button:hover { background: rgba(255, 255, 255, 0.08); }
+.w-actions button.on { background: var(--accent-soft); }
+
+#w-edit .i-done { display: none; }
+#w-edit.on .i-edit { display: none; }
+#w-edit.on .i-done { display: block; }
+
+/* ---------- Строки городов ---------- */
+
+.rows { display: flex; flex-direction: column; gap: 6px; }
+
+.row { display: flex; gap: 6px; align-items: center; }
+
+.chip {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px 0 8px;
+}
+
+.flag {
+  width: 26px !important;
+  height: 26px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background-size: cover;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.chip-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.city, .country { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.city { font-size: 13px; font-weight: 700; }
+.country { font-size: 11px; color: var(--muted); }
+
+.field {
+  flex: 0 0 auto;
+  width: 112px;
+  height: 48px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 10px;
+}
+
+.time {
+  font-size: 22px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.time.sec { font-size: 19px; }
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  max-width: 100%;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.hint span { overflow: hidden; text-overflow: ellipsis; }
+.hint svg { width: 10px; height: 10px; flex: 0 0 auto; }
+.hint .sun { color: var(--accent); }
+.hint .moon { color: var(--night); }
+
+/* Город в том же поясе, что и компьютер — подсветка, как активное поле в MeowsConvert */
+.row.here .field { background: var(--active-bg); }
+.row.here .time { color: var(--active-text); }
+.row.here .hint { color: var(--active-hint); }
+
+/* ---------- Режим редактирования ---------- */
+
+.handle {
+  display: none;
+  width: 16px;
+  color: var(--muted);
+  cursor: grab;
+  place-items: center;
+}
+.handle svg { width: 16px; height: 16px; }
+
+.remove {
+  display: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--red);
+  place-items: center;
+  flex: 0 0 auto;
+}
+.remove:hover { background: rgba(255, 69, 58, 0.15); }
+
+.editing .handle, .editing .remove { display: grid; }
+.editing .field { width: 96px; }
+.editing .time { font-size: 18px; }
+.editing .time.sec { font-size: 15px; }
+
+/* Узкий виджет: в режиме редактирования убираем флаги, чтобы осталось место для названия */
+@media (max-width: 290px) {
+  .editing .flag { display: none; }
+  .editing .chip { padding-left: 10px; }
+}
+
+.row.dragging { opacity: 0.4; }
+.row.drop-before { box-shadow: 0 -2px 0 var(--accent); }
+.row.drop-after { box-shadow: 0 2px 0 var(--accent); }
+
+.add-row {
+  width: 100%;
+  height: 40px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px dashed var(--surface-3);
+  color: var(--muted);
+  font-size: 13px;
+}
+.add-row:hover { color: var(--text); border-color: var(--muted); }
+.rows:empty + .add-row { margin-top: 0; }
+
+/* ---------- Выбор города ---------- */
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 4px 0 10px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: none;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  user-select: text;
+}
+.search input::placeholder { color: var(--muted); }
+.search button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+}
+.search button:hover { background: rgba(255, 255, 255, 0.08); }
+
+.picker-list {
+  margin-top: 6px;
+  max-height: 336px;
+  overflow-y: auto;
+  border-radius: 10px;
+  background: var(--surface);
+}
+.picker-list::-webkit-scrollbar { width: 6px; }
+.picker-list::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 6px 10px;
+  text-align: left;
+  position: relative;
+}
+.item + .item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 46px;
+  right: 0;
+  height: 1px;
+  background: var(--surface-2);
+}
+.item:hover, .item.focus { background: var(--surface-2); }
+.item .flag { width: 24px !important; height: 24px; }
+.item-text { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+.item-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-time { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--surface-3);
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+.check.on { background: var(--accent); border-color: var(--accent); }
+.check.on::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid #000;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+
+.empty-note { text-align: center; color: var(--muted); font-size: 12px; padding: 24px 10px; }
