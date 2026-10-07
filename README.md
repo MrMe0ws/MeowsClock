@@ -21,7 +21,7 @@
 
 [Последний релиз](https://github.com/MrMe0ws/MeowsClock/releases/latest) — Windows 10/11 x64:
 
-- `MeowsClock Setup X.Y.Z.exe` — установщик (ярлык на рабочем столе, удаление через «Приложения»);
+- `MeowsClock.Setup.X.Y.Z.exe` — установщик (ярлык на рабочем столе, удаление через «Приложения»);
 - `MeowsClock-X.Y.Z-portable.zip` — без установки: распаковать и запустить `MeowsClock.exe`.
 
 Файлы не подписаны, поэтому SmartScreen может предупредить о неизвестном издателе:
